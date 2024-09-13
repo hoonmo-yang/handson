@@ -36,6 +36,6 @@ add_routes(
 
 uvicorn.run(
     app=app,
-    host="localhost",
+    host="0.0.0.0",
     port=8000,
 )
