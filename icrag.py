@@ -57,8 +57,8 @@ llm = ChatOllama(
 
 print("retriever ...")
 # pdf = Path("data/patient.pdf")
-pdf = Path("data/kfbl.pdf")
-# pdf = Path("data/basak.pdf")
+# pdf = Path("data/kfbl.pdf")
+pdf = Path("data/basak.pdf")
 retriever = create_vectordb_retriever(pdf)
 print("retriever complted")
 

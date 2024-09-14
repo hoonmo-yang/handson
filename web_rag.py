@@ -51,4 +51,4 @@ question = "What are the approaches to Task Decomposition?"
 docs = vectorstore.similarity_search(question)
 
 response = chain.invoke(docs)
-print(response.content)
+print(response)

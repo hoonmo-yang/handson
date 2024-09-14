@@ -28,16 +28,16 @@ $ wget https://github.com/conda-forge/miniforge/releases/latest/download/Minifor
 이제 내가 사용하고자 하는 환경을 만들자. 만든 환경에서 자기가 마음껏 python 라이브러리를 설치할 수 있다.
 필요에 따라 환경을 여러 개 만들 수도 있다.
 
-4. 새로운 환경을 만든다. 만들 환경의 이름은 `tutorial`이고 설치될 기본 파이썬 버전은 3.12.4이다.
+4. 새로운 환경을 만든다. 만들 환경의 이름은 `handson`이고 설치될 기본 파이썬 버전은 3.12.4이다.
 ```shell
-$ conda create -name tutorial python=3.12.5
+$ conda create --name handson python=3.12.5
 ```
 
-4. `tutorial` 환경을 활성화시킨다.
+4. `handson` 환경을 활성화시킨다.
 ```shell
-$ conda activate tutorial
+$ conda activate handson
 ```
-이후 `pip`로 설치되는 모든 파이썬 라이브러리는 `tutorial` 환경에 별도로 설치될 것이다.
+이후 `pip`로 설치되는 모든 파이썬 라이브러리는 `handson` 환경에 별도로 설치될 것이다.
 
 7. `pip`로 파이썬 패키지인 `numpy`와 `pandas`를 설치해 본다.
 ``` shell

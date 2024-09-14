@@ -1,21 +1,10 @@
-from typing import Union
-
 import uvicorn
 from fastapi import FastAPI
 from langserve import add_routes
 
 from langchain_core.prompts import (ChatPromptTemplate, MessagesPlaceholder)
 from langchain_core.output_parsers import StrOutputParser
-from langchain_core.messages import (HumanMessage, AIMessage, SystemMessage)
-from langchain_core.pydantic_v1 import (BaseModel, Field)
 from langchain_community.chat_models import ChatOllama
-
-
-class InputChat(BaseModel):
-    messages1: list[Union[HumanMessage, AIMessage, SystemMessage]] = Field(
-        ...,
-        description="The chat messages representing the current conversation.",
-    )
 
 
 llm = ChatOllama(
@@ -38,7 +27,7 @@ app = FastAPI()
 
 add_routes(
     app,
-    chain.with_types(input_type=InputChat),
+    chain,
     path="/chat",
     enable_feedback_endpoint=True,
     enable_public_trace_link_endpoint=True,
