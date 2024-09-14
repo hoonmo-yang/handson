@@ -31,7 +31,7 @@ app = FastAPI()
 add_routes(
     app,
     chain,
-    path="/hi",
+    path="/basic",
 )
 
 uvicorn.run(
