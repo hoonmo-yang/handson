@@ -4,7 +4,6 @@ from pathlib import Path
 from langchain_chroma import Chroma
 from langchain_community.chat_models import ChatOllama
 from langchain_community.document_loaders import PyPDFLoader
-from langchain_core.prompts import PromptTemplate
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain.retrievers import ContextualCompressionRetriever
 
@@ -15,13 +14,7 @@ from langchain.retrievers.document_compressors import (
 
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
-def pretty_print(documents):
-    print(
-        f"\n{'-' * 100}\n".join(
-            [f"Document {i + 1}:\n\n" + document.page_content
-             for i, document in enumerate(documents)]
-        )
-    )
+from cenai_core import print_documents
 
 
 pdf = Path("data/basak.pdf")
@@ -52,7 +45,7 @@ question = "바삭국의 통치자는 누구야?"
 
 docs = retriever.invoke(question)
 print("Vanila retriever")
-pretty_print(docs)
+print_documents(docs)
 
 llm = ChatOllama(
     model="llama3.1:latest",
@@ -68,7 +61,7 @@ compressed_docs = compression_retriever.invoke(
     question
 )
 print("LLMChainExtractor")
-pretty_print(compressed_docs)
+print_documents(compressed_docs)
 
 filter_ = LLMChainFilter.from_llm(llm)
 compression_retriever = ContextualCompressionRetriever(
@@ -80,4 +73,4 @@ compressed_docs = compression_retriever.invoke(
     question
 )
 print("LLMChainFilter")
-pretty_print(compressed_docs)
+print_documents(compressed_docs)

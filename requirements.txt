@@ -8,10 +8,13 @@ langchain
 langchain-chroma
 langchain-community
 langchain-huggingface
-langserve==0.3.0dev2
+langchain-openai
+langserve
+lark
 ollama
 pymupdf
 pypdf
+rank_bm25
 sentence-transformers
 sse_starlette
 transformers

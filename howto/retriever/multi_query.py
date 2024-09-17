@@ -1,6 +1,5 @@
 import logging
 from pathlib import Path
-from pydantic import BaseModel, Field
 
 from langchain.retrievers.multi_query import MultiQueryRetriever
 from langchain_chroma import Chroma
