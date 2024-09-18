@@ -39,13 +39,8 @@ retriever = vectorstore.as_retriever(
     search_kwargs={"k": 3},
 )
 
-# The following settings prevent RAG from functioning correctly
-# retriever = vectorstore.as_retriever()
-
-
 def concat_documents(documents: list[Document]) -> str:
     return "\n\n".join(document.page_content for document in documents)
-    # return "바삭국의 수도는 바삭시티입니다."
 
 
 message = '''

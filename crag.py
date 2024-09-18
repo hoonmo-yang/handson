@@ -1,10 +1,13 @@
+from operator import itemgetter
 from pathlib import Path
+
 
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_chroma import Chroma
 from langchain_community.chat_message_histories import ChatMessageHistory
 from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.prompts import MessagesPlaceholder
@@ -113,9 +116,9 @@ chain = RunnableWithMessageHistory(
     configurable={
         "session_id": "abc123",
     }
-)
+) | itemgetter("answer") | StrOutputParser()
 
 
-response = chain.invoke({"input": "바삭국의 수도를 말해줘"})
+response = chain.invoke({"input": "바삭국의 수도는 어디지?"})
 
-print(response["answer"])
+print(response)

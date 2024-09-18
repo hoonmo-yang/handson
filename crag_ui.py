@@ -1,24 +1,33 @@
+from fastapi import FastAPI
+from operator import itemgetter
 from pathlib import Path
+from pydantic import BaseModel, Field
+import uvicorn
 
-from langchain_core.chat_history import BaseChatMessageHistory
-from langchain_core.prompts import (ChatPromptTemplate, MessagesPlaceholder)
-from langchain_core.retrievers import BaseRetriever
-from langchain_core.runnables.history import RunnableWithMessageHistory
+from langchain.chains.combine_documents import create_stuff_documents_chain
 
 from langchain.chains import (
     create_retrieval_chain, create_history_aware_retriever
 )
 
-from langchain.chains.combine_documents import create_stuff_documents_chain
-
-from langchain_text_splitters import RecursiveCharacterTextSplitter
-
+from langchain_chroma import Chroma
 from langchain_community.chat_message_histories import ChatMessageHistory
 from langchain_community.chat_models import ChatOllama
 from langchain_community.document_loaders import PyPDFLoader
-
-from langchain_chroma import Chroma
+from langchain_core.chat_history import BaseChatMessageHistory
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.prompts import (ChatPromptTemplate, MessagesPlaceholder)
+from langchain_core.retrievers import BaseRetriever
+from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langserve import add_routes
+
+class InputType(BaseModel):
+    input: str = Field(
+        ...,
+        description="user input"
+    )
 
 
 def create_vectordb_retriever(pdf: Path) -> BaseRetriever:
@@ -114,27 +123,32 @@ def get_session_history(session_id: str) -> BaseChatMessageHistory:
     return store[session_id]
 
 
-chain = RunnableWithMessageHistory(
-    rag_chain,
-    get_session_history,
-    input_messages_key="input",
-    history_messages_key="chat_history",
-    output_messages_key="answer",
-).with_config(
-    configurable={
-        "session_id": "abc123",
-    }
+chain = (
+    RunnableWithMessageHistory(
+        rag_chain,
+        get_session_history,
+        input_messages_key="input",
+        history_messages_key="chat_history",
+        output_messages_key="answer",
+    ).with_config(
+        configurable={
+            "session_id": "abc123",
+        }
+    )
+    | itemgetter("answer")
+    | StrOutputParser()
 )
 
-while True:
-    user_input = input(">>>> ")
+app = FastAPI()
 
-    if user_input.strip().lower() == "quit":
-        break
+add_routes(
+    app,
+    chain.with_types(input_type=InputType),
+    path="/crag",
+)
 
-    response = chain.invoke(
-        {"input": user_input}
-    )
-    print(response["answer"])
-
-print("Bye")
+uvicorn.run(
+    app=app,
+    host="0.0.0.0",
+    port=8000,
+)
