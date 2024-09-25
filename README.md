@@ -265,18 +265,7 @@ $ pip install fastapi uvicorn
 2. `chat.py`를 수행한다.
 3. `langsmith`를 이용하여 디버깅을 해 본다.
 
-## 10. 챗봇 히스토리 관리 코딩 및 테스트
-### 개요
-* 실제 챗봇을 만들기 위해서는 히스토리 관리 코딩을 해야 한다.
-* langchain API를 사용하여 히스토리 관리 기능을 구현한 챗봇을 만든다.
-* langserve의 chat mode가 아닌 일반 모드의 playground에서 작성한
-  챗봇을 작동해 본다.
-
-1. `history.py`를 작성한다.
-2. `history.py`를 수행한다.
-3. `langsmith`를 이용하여 디버깅을 해 본다.
-
-## 11. RAG 구축 LLM 코딩 및 테스트
+## 10. RAG 구축 LLM 코딩 및 테스트
 ### 개요
 * RAG를 구현해 본다.
 * PDF 문서를 찾는다. (법률이나 어떠한 문서라도 좋다)
@@ -289,7 +278,7 @@ $ pip install fastapi uvicorn
 3. `rag.py`를 수행한다.
 4. `langsmith`를 이용하여 디버깅을 해 본다.
 
-## 12. 대화형 RAG를 구축한다. (RAG + LLM Chatbot)
+## 11. 대화형 RAG를 구축한다. (RAG + LLM Chatbot)
 ### 개요
 앞서 작성한 챗봇은 RAG가 연동된 구현이 아니다.
 또한 앞서 구현한 RAG 예제는 히스토리 기능이 없어서 대화를 할 수 없다.

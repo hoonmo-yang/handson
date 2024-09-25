@@ -1,3 +1,7 @@
+import uvicorn
+from fastapi import FastAPI
+from langserve import add_routes
+
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain_community.chat_models import ChatOllama
@@ -13,8 +17,16 @@ prompt = ChatPromptTemplate.from_template(
 
 chain = prompt | llm | StrOutputParser()
 
-answer = chain.invoke({
-    "input": "요즘 기분도 우울한데 여행이나 떠나야겠어요."
-})
+app = FastAPI()
 
-print(answer)
+add_routes(
+    app,
+    chain,
+    path="/translate",
+)
+
+uvicorn.run(
+    app=app,
+    host="0.0.0.0",
+    port=8000,
+)
