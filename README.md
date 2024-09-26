@@ -206,8 +206,6 @@ $ pip install fastapi uvicorn
 
 1. `basic.py`를 작성한다.
 2. `basic.py`를 수행한다.
-3. `langsmith`를 이용하여 디버깅을 해 본다.
-
 
 ## 5. Langchain 디버깅 환경 세팅 및 테스트
 ### 개요
@@ -225,20 +223,20 @@ $ pip install fastapi uvicorn
 * langserve UI를 사용하여 LLM 예제를 작성한다.
 * FastAPI, uvicorn, langserve의 add_routes 함수를 이용하여 구축한다.
 
-1. `langserve_ui.py`를 작성한다.
-2. `langserve_ui.py`를 수행한다.
-3. `langsmith`를 이용하여 디버깅을 해 본다.
+1. `basic_ui.py`를 작성한다.
+2. `basic_ui.py`를 웹 UI에서 테스트한다.
 
 ## 7. 번역기 구현 (Prompt 튜닝)
 ### 개요
 * 프롬프트를 제어하여 LLM을 목적에 맞게 변경할 수 있다.
 * 프롬프트를 작성해서 입력한 문장에 대해 답변을 하는 것이 아니라 영어로 번역을 하는
   간단한 번역기를 만들어 본다.
-* langserve UI playground에서 동작 확인할 수 있게 작성한다.
+* langserve UI playground에서 동작 확인할 수 있는 버전도 작성한다.
 
 1. `translate.py`를 작성한다.
 2. `translate.py`를 수행한다.
-3. `langsmith`를 이용하여 디버깅을 해 본다.
+3. `translate_ui.py`를 작성한다.
+4. `translate_ui.py`를 웹 UI에서 테스트한다.
 
 ## 8. 문서요약기 구현 (Prompt 튜닝)
 ### 개요
@@ -246,11 +244,12 @@ $ pip install fastapi uvicorn
 * 프롬프트를 작성해서 입력한 문장에 대해 답변을 하는 것이 아니라 입력한 
   문장을 요약하는 간단한 요약기를 만들어 본다.
 * 모든 출력은 한국어로 되게 한다.
-* langserve UI playground에서 동작 확인할 수 있게 작성한다.
+* langserve UI playground에서 동작 확인할 수 있는 버전도 작성한다.
 
 1. `summary.py`를 작성한다.
 2. `summary.py`를 수행한다.
-3. `langsmith`를 이용하여 디버깅을 해 본다.
+3. `summary_ui.py`를 작성한다.
+4. `summary_ui.py`를 웹 UI에서 테스트한다.
 
 ## 9. Langserve UI 기반 챗봇 코딩 및 테스트
 ### 개요
@@ -263,7 +262,7 @@ $ pip install fastapi uvicorn
 
 1. `chat.py`를 작성한다.
 2. `chat.py`를 수행한다.
-3. `langsmith`를 이용하여 디버깅을 해 본다.
+2. `chat.py`를 웹 UI에서 테스트한다.
 
 ## 10. RAG 구축 LLM 코딩 및 테스트
 ### 개요
@@ -272,11 +271,13 @@ $ pip install fastapi uvicorn
 * PDF 문서를 로딩, 임베딩, 청킹 (자르기)를 하여 벡터 DB에 저장한다.
 * 이후 Retriever를 연동하여 RAG + LLM을 구축한다.
 * RAG가 있는 경우와 없는 경우 LLM의 동작이 어떻게 다른지 확인한다.
+* langserve UI playground에서 동작 확인할 수 있는 버전도 작성한다.
 
 1. pdf로 RAG에 로딩할 문서를 생성한다.
 2. `rag.py`를 작성한다.
 3. `rag.py`를 수행한다.
-4. `langsmith`를 이용하여 디버깅을 해 본다.
+4. `rag_ui.py`를 작성한다.
+5. `rag_ui.py`를 웹 UI에서 테스트한다.
 
 ## 11. 대화형 RAG를 구축한다. (RAG + LLM Chatbot)
 ### 개요
@@ -288,7 +289,9 @@ $ pip install fastapi uvicorn
 * 챗봇을 구축한다.
 * RAG와 챗봇을 연동한 대화형 RAG를 구축한다.
 * RAG가 있는 경우와 없는 경우 LLM의 동작이 어떻게 다른지 확인한다.
+* langserve UI playground에서 동작 확인할 수 있는 버전도 작성한다.
 
-1. `icrag.py`를 작성한다.
-2. `icrag.py`를 수행한다.
-3. `langsmith`를 이용하여 디버깅을 해 본다.
+1. `crag.py`를 작성한다.
+2. `crag.py`를 수행한다.
+3. `crag_ui.py`를 작성한다.
+4. `crag_ui.py`를 웹 UI에서 테스트한다.
