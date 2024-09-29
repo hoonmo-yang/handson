@@ -3,6 +3,7 @@ chromadb
 datasets
 faiss-gpu-cu12
 fastapi
+flake8
 huggingface-hub
 langchain
 langchain-chroma
@@ -11,11 +12,15 @@ langchain-huggingface
 langchain-openai
 langserve
 lark
+matplotlib
+numpy
 ollama
+pandas
 pymupdf
 pypdf
 rank_bm25
 sentence-transformers
 sse_starlette
+streamlit
 transformers
 uvicorn

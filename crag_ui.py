@@ -17,11 +17,11 @@ from langchain_community.document_loaders import PyPDFLoader
 from langchain_core.chat_history import BaseChatMessageHistory
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import (ChatPromptTemplate, MessagesPlaceholder)
-from langchain_core.retrievers import BaseRetriever
 from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langserve import add_routes
+
 
 class InputType(BaseModel):
     input: str = Field(
@@ -30,46 +30,50 @@ class InputType(BaseModel):
     )
 
 
-def create_vectordb_retriever(pdf: Path) -> BaseRetriever:
-    loader = PyPDFLoader(str(pdf))
-    documents = loader.load()
+store = {}
 
-    splitter = RecursiveCharacterTextSplitter(
-        chunk_size=1000,
-        chunk_overlap=200,
-    )
 
-    splits = splitter.split_documents(documents)
+def get_session_history(session_id: str) -> BaseChatMessageHistory:
+    if session_id not in store:
+        store[session_id] = ChatMessageHistory()
+    return store[session_id]
 
-    embed = HuggingFaceEmbeddings(
-        model_name="BAAI/bge-m3",
-        model_kwargs={"device": "cuda"},
-        encode_kwargs={"normalize_embeddings": True},
-    )
 
-    vectorstore = Chroma.from_documents(
-        documents=splits,
-        embedding=embed,
-    )
+print("retriever ...")
 
-    retriever = vectorstore.as_retriever(
-        search_type="similarity",
-        search_kwargs={"k": 3},
-    )
+pdf = Path("data/basak.pdf")
 
-    return retriever
+loader = PyPDFLoader(str(pdf))
+documents = loader.load()
 
+splitter = RecursiveCharacterTextSplitter(
+    chunk_size=1000,
+    chunk_overlap=200,
+)
+
+splits = splitter.split_documents(documents)
+
+embed = HuggingFaceEmbeddings(
+    model_name="BAAI/bge-m3",
+    model_kwargs={"device": "cuda"},
+    encode_kwargs={"normalize_embeddings": True},
+)
+
+vectorstore = Chroma.from_documents(
+    documents=splits,
+    embedding=embed,
+)
+
+retriever = vectorstore.as_retriever(
+    search_type="similarity",
+    search_kwargs={"k": 3},
+)
+
+print("retriever complted")
 
 llm = ChatOllama(
     model="llama3.1:latest",
 )
-
-print("retriever ...")
-# pdf = Path("data/patient.pdf")
-# pdf = Path("data/kfbl.pdf")
-pdf = Path("data/basak.pdf")
-retriever = create_vectordb_retriever(pdf)
-print("retriever complted")
 
 contextualize_q_system_prompt = '''
     Given a chat history and the latest user question
@@ -113,15 +117,6 @@ qa_prompt = ChatPromptTemplate.from_messages(
 
 qa_chain = create_stuff_documents_chain(llm, qa_prompt)
 rag_chain = create_retrieval_chain(history_aware_retriever, qa_chain)
-
-store = {}
-
-
-def get_session_history(session_id: str) -> BaseChatMessageHistory:
-    if session_id not in store:
-        store[session_id] = ChatMessageHistory()
-    return store[session_id]
-
 
 chain = (
     RunnableWithMessageHistory(
